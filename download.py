@@ -3,9 +3,12 @@ import argparse
 
 argparser = argparse.ArgumentParser()
 
-argparser.add_argument("-l", "--link", type=str, help="Link(url) of Video or Image", required=True)
-argparser.add_argument("-n", "--name-file", type=str, help="Output Name of File")
-argparser.add_argument("-p", "--path-save", type=str, help="Path to Save File", required=True)
+argparser.add_argument("-l", "--link", type=str,
+                       help="Link(url) of Video or Image", required=True)
+argparser.add_argument("-n", "--name-file", type=str,
+                       help="Output Name of File")
+argparser.add_argument("-p", "--path-save", type=str,
+                       help="Path to Save File", required=True)
 
 arguments = argparser.parse_args()
 
@@ -20,7 +23,8 @@ link = str(link).replace("&", "EGRANDE")
 
 print("\n")
 
-def show_details(link:str):
+
+def show_details(link: str):
     print("*" * 120)
     print("\n")
 
@@ -38,17 +42,18 @@ if str(link).__contains__("youtube"):
     print("Link do YouTube")
     show_details(link)
     os.chdir(path_to_save)
-    os.system(f"C:\path\youtube-dl.exe {str(link).replace('EGRANDE', '&')}")
+    os.system(f"youtube-dl {str(link).replace('EGRANDE', '&')}")
     print("\n")
     print(f"Name file '{name_file_output}' not used in this case")
 
 else:
-    os.chdir("C:\\path\\ffmpeg-N-102652-g43295ae6a9-win64-gpl-shared\\bin")
+    os.chdir("ffmpeg")
     error = os.system(
-        f'.\\ffmpeg.exe -i "{str(link).replace("EGRANDE", "&")}" -c copy -bsf:a aac_adtstoasc "{path_to_save}/{name_file_output}.mp4"')
+        f'ffmpeg -i "{str(link).replace("EGRANDE", "&")}" -c copy -bsf:a aac_adtstoasc "{path_to_save}/{name_file_output}.mp4"')
     if error == 1:
         print("Error with ffmpeg")
-        error = os.system(f"C:\path\wget.exe {str(link).replace('EGRANDE', '&')}")
+        error = os.system(
+            f"wget {str(link).replace('EGRANDE', '&')}")
         if error == 1:
             print("Error all")
     show_details(link)
